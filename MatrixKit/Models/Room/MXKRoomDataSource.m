@@ -2712,7 +2712,7 @@ NSString *const kMXKRoomDataSourceTimelineErrorErrorKey = @"kMXKRoomDataSourceTi
                                     if (previousFirstBubbleData.isPaginationFirstBubble == NO)
                                     {
                                         // Check whether the current first bubble has been sent by the same user.
-                                        previousFirstBubbleData.shouldHideSenderInformation |= [previousFirstBubbleData hasSameSenderAsBubbleCellData:bubbleData];
+                                        previousFirstBubbleData.shouldHideSenderInformation |= [previousFirstBubbleData hasSameSenderAsBubbleCellData:bubbleData] && bubbleData.events.firstObject.eventType != MXEventTypeRoomPowerLevels;
                                     }
                                 }
 

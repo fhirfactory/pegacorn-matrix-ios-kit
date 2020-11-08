@@ -36,6 +36,13 @@ static NSAttributedString *messageSeparator = nil;
 
 - (BOOL)addEvent:(MXEvent*)event andRoomState:(MXRoomState*)roomState
 {
+    // For situations where we wish to display power level changes as independent events:
+    /// Prevent power level changes being appended to other event bubbles, AND
+    /// Prevent other events being appended to power level changes
+    if (event.eventType == MXEventTypeRoomPowerLevels || self.events.firstObject.eventType == MXEventTypeRoomPowerLevels)
+    {
+        return NO;
+    }
     // We group together text messages from the same user (attachments are not merged).
     if ([event.sender isEqualToString:self.senderId] && (self.attachment == nil) && (self.bubbleComponents.count < self.maxComponentCount))
     {
