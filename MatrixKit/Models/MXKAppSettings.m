@@ -166,7 +166,8 @@ static NSString *const kMXAppGroupID = @"group.org.matrix";
                                                                     kMXEventTypeStringCallHangup,
                                                                     kMXEventTypeStringSticker,
                                                                     kMXEventTypeStringKeyVerificationCancel,
-                                                                    kMXEventTypeStringKeyVerificationDone
+                                                                    kMXEventTypeStringKeyVerificationDone,
+                                                                    kMXEventTypeStringRoomAvatar
                                                                    ]];
         
         _messageDetailsAllowSharing = YES;

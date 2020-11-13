@@ -14,23 +14,23 @@ PODS:
   - AFNetworking/Serialization (4.0.1)
   - AFNetworking/UIKit (4.0.1):
     - AFNetworking/NSURLSession
-  - Down (0.9.3)
-  - DTCoreText (1.6.23):
-    - DTCoreText/Core (= 1.6.23)
+  - Down (0.9.4)
+  - DTCoreText (1.6.25):
+    - DTCoreText/Core (= 1.6.25)
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTCoreText/Core (1.6.23):
+  - DTCoreText/Core (1.6.25):
     - DTFoundation/Core (~> 1.7.5)
     - DTFoundation/DTAnimatedGIF (~> 1.7.5)
     - DTFoundation/DTHTMLParser (~> 1.7.5)
     - DTFoundation/UIKit (~> 1.7.5)
-  - DTFoundation/Core (1.7.14)
-  - DTFoundation/DTAnimatedGIF (1.7.14)
-  - DTFoundation/DTHTMLParser (1.7.14):
+  - DTFoundation/Core (1.7.16)
+  - DTFoundation/DTAnimatedGIF (1.7.16)
+  - DTFoundation/DTHTMLParser (1.7.16):
     - DTFoundation/Core
-  - DTFoundation/UIKit (1.7.14):
+  - DTFoundation/UIKit (1.7.16):
     - DTFoundation/Core
   - GZIP (1.3.0)
   - HPGrowingTextView (1.1)
@@ -82,9 +82,9 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   AFNetworking: 7864c38297c79aaca1500c33288e429c3451fdce
-  Down: 4553b984236807e384fa0ef7c7e360ef9f7c425d
-  DTCoreText: 67023bb51b26711d5f640c851f4845aea14c24c9
-  DTFoundation: 25aa19bb7c6e225b1dfae195604fb8cf1da0ab4c
+  Down: 276f2c3eeeaf30345873bdad25f44b2640fcfa3a
+  DTCoreText: e92f4cf6b36d9d71ce4436d12cf089d74ab0596b
+  DTFoundation: e7781d9fd2f202bfd451fbbf8cab71ce83b46498
   GZIP: 416858efbe66b41b206895ac6dfd5493200d95b3
   HPGrowingTextView: 88a716d97fb853bcb08a4a08e4727da17efc9b19
   JSQMessagesViewController: 73cab48aa92fc2d512f3b6724f3425cc47a19eb5

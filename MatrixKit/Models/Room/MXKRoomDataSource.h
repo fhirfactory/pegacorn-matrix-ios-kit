@@ -703,4 +703,6 @@ extern NSString *const kMXKRoomDataSourceTimelineErrorErrorKey;
  */
 - (NSString*)editableTextMessageForEvent:(MXEvent*)event;
 
+#pragma mark Special Events
++ (bool)isVisibleAdminEvent:(MXEventType)type;
 @end

@@ -2478,6 +2478,18 @@ NSString *const kMXKRoomDataSourceTimelineErrorErrorKey = @"kMXKRoomDataSourceTi
     return isHighlighted;
 }
 
++ (bool)isVisibleAdminEvent:(MXEventType)type{
+    switch (type) {
+        case MXEventTypeRoomPowerLevels:
+        case MXEventTypeRoomName:
+        case MXEventTypeRoomTopic:
+        case MXEventTypeRoomAvatar:
+            return true;
+        default:
+            return false;
+    }
+}
+
 /**
  Start processing pending events.
  
@@ -2712,7 +2724,8 @@ NSString *const kMXKRoomDataSourceTimelineErrorErrorKey = @"kMXKRoomDataSourceTi
                                     if (previousFirstBubbleData.isPaginationFirstBubble == NO)
                                     {
                                         // Check whether the current first bubble has been sent by the same user.
-                                        previousFirstBubbleData.shouldHideSenderInformation |= [previousFirstBubbleData hasSameSenderAsBubbleCellData:bubbleData] && bubbleData.events.firstObject.eventType != MXEventTypeRoomPowerLevels;
+                                        previousFirstBubbleData.shouldHideSenderInformation |= [previousFirstBubbleData hasSameSenderAsBubbleCellData:bubbleData] && ![MXKRoomDataSource isVisibleAdminEvent:bubbleData.events.firstObject.eventType];
+                                        
                                     }
                                 }
 
