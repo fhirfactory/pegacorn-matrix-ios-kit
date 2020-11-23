@@ -39,7 +39,7 @@ static NSAttributedString *messageSeparator = nil;
     // For situations where we wish to display power level changes as independent events:
     /// Prevent power level changes being appended to other event bubbles, AND
     /// Prevent other events being appended to power level changes
-    if (event.eventType == MXEventTypeRoomPowerLevels || self.events.firstObject.eventType == MXEventTypeRoomPowerLevels)
+    if ([MXKRoomDataSource isVisibleAdminEvent:event.eventType] || [MXKRoomDataSource isVisibleAdminEvent:self.events.firstObject.eventType])
     {
         return NO;
     }
