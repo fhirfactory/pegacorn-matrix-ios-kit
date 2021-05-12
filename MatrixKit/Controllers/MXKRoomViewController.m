@@ -218,6 +218,9 @@
     
     // By default actions button is shown in document preview
     _allowActionsInDocumentPreview = YES;
+    
+    // By default the duration of the composer resizing is 0.3s
+    _resizeComposerAnimationDuration = 0.3;
 }
 
 - (void)viewDidLoad
@@ -461,6 +464,19 @@
         self->shouldScrollToBottomOnTableRefresh = NO;
         self->isSizeTransitionInProgress = NO;
     });
+}
+
+- (void)viewDidLayoutSubviews
+{
+    [super viewDidLayoutSubviews];
+    
+    CGFloat bubblesTableViewBottomConst = self.roomInputToolbarContainerBottomConstraint.constant + self.roomInputToolbarContainerHeightConstraint.constant + self.roomActivitiesContainerHeightConstraint.constant;
+
+    if (self.bubblesTableViewBottomConstraint.constant != bubblesTableViewBottomConst)
+    {
+        self.bubblesTableViewBottomConstraint.constant = bubblesTableViewBottomConst;
+    }
+
 }
 
 #pragma mark - Override MXKViewController
@@ -2447,86 +2463,80 @@
             // Check whether the cell is actually visible
             if (cell && (cell.frame.origin.y < contentBottomOffsetY))
             {
-                if ([cell isKindOfClass:MXKTableViewCell.class])
+                if (![cell isKindOfClass:MXKTableViewCell.class])
                 {
-                    MXKCellData *cellData = ((MXKTableViewCell *)cell).mxkCellData;
-                    
-                    // Only 'MXKRoomBubbleCellData' is supported here for the moment.
-                    if ([cellData isKindOfClass:MXKRoomBubbleCellData.class])
+                    continue;
+                }
+                
+                MXKCellData *cellData = ((MXKTableViewCell *)cell).mxkCellData;
+                
+                // Only 'MXKRoomBubbleCellData' is supported here for the moment.
+                if (![cellData isKindOfClass:MXKRoomBubbleCellData.class])
+                {
+                    continue;
+                }
+
+                MXKRoomBubbleCellData *bubbleData = (MXKRoomBubbleCellData*)cellData;
+                
+                // Check which bubble component is displayed at the bottom.
+                // For that update each component position.
+                [bubbleData prepareBubbleComponentsPosition];
+                
+                NSArray *bubbleComponents = bubbleData.bubbleComponents;
+                NSInteger componentIndex = bubbleComponents.count;
+                
+                CGFloat bottomPositionY = cell.frame.size.height;
+                
+                MXKRoomBubbleComponent *component;
+                
+                while (componentIndex --)
+                {
+                    component = bubbleComponents[componentIndex];
+                    if (![cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
                     {
-                        MXKRoomBubbleCellData *bubbleData = (MXKRoomBubbleCellData*)cellData;
-                        
-                        // Check which bubble component is displayed at the bottom.
-                        // For that update each component position.
-                        [bubbleData prepareBubbleComponentsPosition];
-                        
-                        NSArray *bubbleComponents = bubbleData.bubbleComponents;
-                        NSInteger componentIndex = bubbleComponents.count;
-                        
-                        CGFloat bottomPositionY = cell.frame.size.height;
-                        
-                        MXKRoomBubbleComponent *component;
-                        
-                        while (componentIndex --)
-                        {
-                            component = bubbleComponents[componentIndex];
-                            if ([cell isKindOfClass:MXKRoomBubbleTableViewCell.class])
-                            {
-                                MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
-                                
-                                // Check whether the bottom part of the component is visible.
-                                CGFloat pos = cell.frame.origin.y + bottomPositionY;
-                                if (pos <= contentBottomOffsetY)
-                                {
-                                    // We found the component
-                                    currentEventIdAtTableBottom = component.event.eventId;
-                                    break;
-                                }
-                                
-                                // Prepare the bottom position for the next component
-                                bottomPositionY = roomBubbleTableViewCell.msgTextViewTopConstraint.constant + component.position.y;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                        
-                        if (currentEventIdAtTableBottom)
-                        {
-                            if (acknowledge && self.isEventsAcknowledgementEnabled)
-                            {
-                                // Indicate to the homeserver that the user has read this event.
-                                
-                                // Check whether the read marker must be updated.
-                                BOOL updateReadMarker = _updateRoomReadMarker;
-                                if (updateReadMarker && roomDataSource.room.accountData.readMarkerEventId)
-                                {
-                                    MXEvent *currentReadMarkerEvent = [roomDataSource.mxSession.store eventWithEventId:roomDataSource.room.accountData.readMarkerEventId inRoom:roomDataSource.roomId];
-                                    if (!currentReadMarkerEvent)
-                                    {
-                                        currentReadMarkerEvent = [roomDataSource eventWithEventId:roomDataSource.room.accountData.readMarkerEventId];
-                                    }
-                                    
-                                    // Update the read marker only if the current event is available, and the new event is posterior to it.
-                                    updateReadMarker = (currentReadMarkerEvent && (currentReadMarkerEvent.originServerTs <= component.event.originServerTs));
-                                }
-                                
-                                [roomDataSource.room acknowledgeEvent:component.event andUpdateReadMarker:updateReadMarker];
-                            }
-                            break;
-                        }
-                        // else we consider the previous cell.
+                        continue;
                     }
-                    else
+
+                    MXKRoomBubbleTableViewCell *roomBubbleTableViewCell = (MXKRoomBubbleTableViewCell *)cell;
+                    
+                    // Check whether the bottom part of the component is visible.
+                    CGFloat pos = cell.frame.origin.y + bottomPositionY;
+                    if (pos <= contentBottomOffsetY)
                     {
+                        // We found the component
+                        currentEventIdAtTableBottom = component.event.eventId;
                         break;
                     }
+                    
+                    // Prepare the bottom position for the next component
+                    bottomPositionY = roomBubbleTableViewCell.msgTextViewTopConstraint.constant + component.position.y;
                 }
-                else
+                
+                if (currentEventIdAtTableBottom)
                 {
+                    if (acknowledge && self.isEventsAcknowledgementEnabled)
+                    {
+                        // Indicate to the homeserver that the user has read this event.
+                        
+                        // Check whether the read marker must be updated.
+                        BOOL updateReadMarker = _updateRoomReadMarker;
+                        if (updateReadMarker && roomDataSource.room.accountData.readMarkerEventId)
+                        {
+                            MXEvent *currentReadMarkerEvent = [roomDataSource.mxSession.store eventWithEventId:roomDataSource.room.accountData.readMarkerEventId inRoom:roomDataSource.roomId];
+                            if (!currentReadMarkerEvent)
+                            {
+                                currentReadMarkerEvent = [roomDataSource eventWithEventId:roomDataSource.room.accountData.readMarkerEventId];
+                            }
+                            
+                            // Update the read marker only if the current event is available, and the new event is posterior to it.
+                            updateReadMarker = (currentReadMarkerEvent && (currentReadMarkerEvent.originServerTs <= component.event.originServerTs));
+                        }
+                        
+                        [roomDataSource.room acknowledgeEvent:component.event andUpdateReadMarker:updateReadMarker];
+                    }
                     break;
                 }
+                // else we consider the previous cell.
             }
         }
     }
@@ -3440,25 +3450,22 @@
     _roomInputToolbarContainerHeightConstraint.constant = height;
     
     // Update layout with animation
-    [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
+    [UIView animateWithDuration:self.resizeComposerAnimationDuration delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionCurveEaseIn
                      animations:^{
                          // We will scroll to bottom if the bottom of the table is currently visible
                          BOOL shouldScrollToBottom = [self isBubblesTableScrollViewAtTheBottom];
                          
                          CGFloat bubblesTableViewBottomConst = self->_roomInputToolbarContainerBottomConstraint.constant + self->_roomInputToolbarContainerHeightConstraint.constant + self->_roomActivitiesContainerHeightConstraint.constant;
                          
-                         if (self->_bubblesTableViewBottomConstraint.constant != bubblesTableViewBottomConst)
-                         {
-                             self->_bubblesTableViewBottomConstraint.constant = bubblesTableViewBottomConst;
-                             
-                             // Force to render the view
-                             [self.view layoutIfNeeded];
-                             
-                             if (shouldScrollToBottom)
-                             {
-                                 [self scrollBubblesTableViewToBottomAnimated:NO];
-                             }
-                         }
+                        self->_bubblesTableViewBottomConstraint.constant = bubblesTableViewBottomConst;
+                        
+                        // Force to render the view
+                        [self.view layoutIfNeeded];
+                        
+                        if (shouldScrollToBottom)
+                        {
+                            [self scrollBubblesTableViewToBottomAnimated:NO];
+                        }
                      }
                      completion:^(BOOL finished){
                          if (completion)

@@ -1,3 +1,198 @@
+Changes in 0.14.11 (2021-05-07)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * MXKEventFormatter: Expose defaultRoomSummaryUpdater ivar as protected.
+ * MXKCallViewController: Add transfer button and implement actions.
+ * MXKAuthenticationVC: Expose current HTTP Operation (vector-im/element-ios/issues/4276).
+ * MXKAccount: Log reasons for incompatible sync filter (vector-im/element-ios/issues/3921).
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * CI: Introduce GH actions.
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixSDK version ([v0.18.11](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.18.11)).
+
+Changes in 0.14.10 (2021-04-22)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixSDK version ([v0.18.10](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.18.10)).
+
+Changes in 0.14.9 (2021-04-16)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * 
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixSDK version ([v0.18.9](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.18.9)).
+
+Changes in 0.14.8 (2021-04-14)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * RR are not sent if a typing notification is shown in the timeline (vector-im/element-ios/issues/4209).
+ * Outgoing messages edited on another session are not updated in my room history (vector-im/element-ios/issues/4201).
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixSDK version ([v0.18.8](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.18.8)).
+
+Changes in 0.14.7 (2021-04-09)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * Vertical padding is borked on new attachment UI after going into file selector and out again (vector-im/element-ios/issues/4156).
+ * Vertical layout of typing notifs can go wonky (vector-im/element-ios/issues/4159).
+
+⚠️ API Changes
+ * MXKRoomBubbleCellDataStoring: Introduce target user ID, display name and avatar URL for room membership events (vector-im/element-ios/issues/4102).
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixSDK version ([v0.18.7](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.18.7)).
+
+Changes in 0.14.6 (2021-03-24)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * Pods: Update JSQMessagesViewController, DTCoreText, Down (vector-im/element-ios/issues/4120).
+ * MXKRoomDataSource: Introduce secondaryRoomId and secondaryRoomEventTypes.
+
+🐛 Bugfix
+ * Fix collapsing of separately processed events
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * 
+
+Improvements:
+ * Upgrade MatrixSDK version ([v0.18.6](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.18.6)).
+
+Changes in 0.14.5 (2021-03-11)
+=================================================
+
+✨ Features
+ * 
+
+🙌 Improvements
+ * 
+
+🐛 Bugfix
+ * MXKRoomDataSource: Fix memory leak in `bubbles` array.
+
+⚠️ API Changes
+ * 
+
+🗣 Translations
+ * 
+    
+🧱 Build
+ * 
+
+Others
+ * Ensure room on event editions.
+
+Improvements:
+ * Upgrade MatrixSDK version ([v0.18.5](https://github.com/matrix-org/matrix-ios-sdk/releases/tag/v0.18.5)).
+
 Changes in 0.14.4 (2021-03-03)
 =================================================
 
